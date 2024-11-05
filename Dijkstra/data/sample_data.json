@@ -1,0 +1,7 @@
+{
+    "noeuds": ["A", "B", "C"],
+    "liens": [
+        {"source": "A", "cible": "B", "poids": 5},
+        {"source": "B", "cible": "C", "poids": 10}
+    ]
+}
