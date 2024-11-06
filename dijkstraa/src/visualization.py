@@ -15,7 +15,7 @@ def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
     for lien in graphe.liens:
         G.add_edge(lien.source.id, lien.destination.id, weight=lien.calculer_cout())
 
-    # Positionnement des noeuds (positionnement fixe en cercle)
+    # Positionnement des noeuds
     pos = nx.circular_layout(G)
 
     # Charger l'image du routeur
@@ -28,13 +28,22 @@ def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
         ab = AnnotationBbox(OffsetImage(router_image, zoom=0.1), (x, y), frameon=False)
         ax.add_artist(ab)
 
-    # Dessiner les arêtes avec les poids
-    nx.draw_networkx_edges(G, pos, arrows=True, ax=ax)
+    # Dessiner les arêtes sans flèches
+    nx.draw_networkx_edges(G, pos, ax=ax, arrows=False, connectionstyle="arc3,rad=0.1")
     labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, ax=ax)
 
     # Dessiner les étiquettes des noeuds
     nx.draw_networkx_labels(G, pos, font_size=12, font_family='sans-serif', ax=ax)
+
+    # Dessiner les flèches manuellement pour chaque arête
+    for (u, v, d) in G.edges(data=True):
+        x_start, y_start = pos[u]
+        x_end, y_end = pos[v]
+        ax.annotate(
+            "", xy=(x_end, y_end), xytext=(x_start, y_start),
+            arrowprops=dict(arrowstyle="->", color="black", lw=1.5),
+        )
 
     # Afficher le chemin optimal et la distance
     if chemin_optimal and distance_totale is not None:
