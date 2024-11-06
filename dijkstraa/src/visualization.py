@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from graph import Graphe, Noeud, Lien
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import os
 
 def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
     G = nx.DiGraph()
@@ -18,7 +19,7 @@ def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
     pos = nx.circular_layout(G)
 
     # Charger l'image du routeur
-    router_image = plt.imread("src/1918.png")
+    router_image = plt.imread("./1918.png")
 
     # Afficher les noeuds avec une image
     fig, ax = plt.subplots()

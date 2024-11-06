@@ -79,7 +79,12 @@ class Graphe:
         for lien in self.liens:
             print(f"{lien.source.id} -> {lien.destination.id} (Cout: {lien.calculer_cout()})")
 
-
+    def trouver_noeud(self, id_noeud):
+        """Recherche un nœud par son ID et le retourne, ou None s'il n'est pas trouvé."""
+        for noeud in self.noeuds:
+            if noeud.id == id_noeud:
+                return noeud
+        return None   
     def ajouter_lien(self, lien: Lien):
         self.liens.append(lien)
         lien.source.ajouter_voisin(lien)  # Ajout du lien aux voisins du nœud source
