@@ -28,15 +28,13 @@ def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
         ab = AnnotationBbox(OffsetImage(router_image, zoom=0.1), (x, y), frameon=False)
         ax.add_artist(ab)
 
-    # Dessiner les arêtes sans flèches
-    nx.draw_networkx_edges(G, pos, ax=ax, arrows=False)
+    # Dessiner les arêtes en noir avec flèches pour les liens non-optimaux
+    nx.draw_networkx_edges(G, pos, ax=ax, edgelist=[(lien.source.id, lien.destination.id) for lien in graphe.liens],
+                           arrows=False, edge_color="black")
     labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, ax=ax)
 
-    # Dessiner les étiquettes des noeuds
-    nx.draw_networkx_labels(G, pos, font_size=12, font_family='sans-serif', ax=ax)
-
-    # Ajouter des flèches manuelles pour chaque lien
+    # Ajouter des flèches pour chaque lien
     for (u, v, d) in G.edges(data=True):
         x_start, y_start = pos[u]
         x_end, y_end = pos[v]
@@ -45,13 +43,29 @@ def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
             arrowprops=dict(arrowstyle="->", color="black", lw=1.5),
         )
 
-    # Afficher le chemin optimal et la distance
+    # Dessiner le chemin optimal en rouge, avec des flèches rouges
+    if chemin_optimal:
+        for i in range(len(chemin_optimal) - 1):
+            u = chemin_optimal[i].id
+            v = chemin_optimal[i + 1].id
+            x_start, y_start = pos[u]
+            x_end, y_end = pos[v]
+            # Ligne rouge pour les liens du chemin optimal
+            ax.annotate(
+                "", xy=(x_end, y_end), xytext=(x_start, y_start),
+                arrowprops=dict(arrowstyle="->", color="red", lw=2.5),
+            )
+
+    # Afficher les étiquettes des noeuds
+    nx.draw_networkx_labels(G, pos, font_size=12, font_family='sans-serif', ax=ax)
+
+    # Afficher le texte du chemin optimal et la distance
     if chemin_optimal and distance_totale is not None:
         chemin_text = "Chemin optimal: " + " -> ".join([str(noeud.id) for noeud in chemin_optimal])
         distance_text = f"Distance totale: {distance_totale}"
         plt.text(1.05, 0.5, chemin_text + "\n" + distance_text, transform=ax.transAxes, 
                  fontsize=12, verticalalignment='center', bbox=dict(boxstyle="round,pad=0.3", edgecolor="gray"))
 
-    plt.title("Visualisation du Graphe avec Liens Orientés")
+    plt.title("Visualisation du Graphe avec Chemin Optimal en Rouge")
     plt.axis('off')  # Désactiver l'axe
     plt.show()
