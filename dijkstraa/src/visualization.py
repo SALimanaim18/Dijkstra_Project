@@ -29,14 +29,14 @@ def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
         ax.add_artist(ab)
 
     # Dessiner les arêtes sans flèches
-    nx.draw_networkx_edges(G, pos, ax=ax, arrows=False, connectionstyle="arc3,rad=0.1")
+    nx.draw_networkx_edges(G, pos, ax=ax, arrows=False)
     labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, ax=ax)
 
     # Dessiner les étiquettes des noeuds
     nx.draw_networkx_labels(G, pos, font_size=12, font_family='sans-serif', ax=ax)
 
-    # Dessiner les flèches manuellement pour chaque arête
+    # Ajouter des flèches manuelles pour chaque lien
     for (u, v, d) in G.edges(data=True):
         x_start, y_start = pos[u]
         x_end, y_end = pos[v]
@@ -52,6 +52,6 @@ def dessiner_graphe(graphe, chemin_optimal=None, distance_totale=None):
         plt.text(1.05, 0.5, chemin_text + "\n" + distance_text, transform=ax.transAxes, 
                  fontsize=12, verticalalignment='center', bbox=dict(boxstyle="round,pad=0.3", edgecolor="gray"))
 
-    plt.title("Visualisation du Graphe")
+    plt.title("Visualisation du Graphe avec Liens Orientés")
     plt.axis('off')  # Désactiver l'axe
     plt.show()
