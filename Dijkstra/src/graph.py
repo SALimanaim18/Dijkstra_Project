@@ -83,3 +83,5 @@ class Graphe:
     def ajouter_lien(self, lien: Lien):
         self.liens.append(lien)
         lien.source.ajouter_voisin(lien)  # Ajout du lien aux voisins du nœud source
+
+
