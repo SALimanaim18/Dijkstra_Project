@@ -144,16 +144,25 @@ def modifier_graphe(graphe):
 
 def main():
     print("Bienvenue dans l'application de routage !")
-    choix = input("Choisissez une option :\n1 - Charger le graphe depuis un fichier JSON\n2 - Saisie manuelle du graphe\n3 - Utiliser des données statiques\nVotre choix : ")
+    choix = input("Choisissez une option :\n1 - Charger le graphe depuis un fichier \n2 - Saisie manuelle du graphe\n3 - Utiliser des données statiques\nVotre choix : ")
 
     if choix == '1':
-        chemin_fichier = input("Entrez le chemin du fichier JSON : ")
-        graphe = charger_graphe_depuis_fichier(chemin_fichier)
+        ch=input("Choisissez quel type de fichier :\n1 - un fichier JSON \n2 - un fichier Excel \n")
+        if ch=='1':
+           chemin_fichier = input("Entrez le chemin du fichier JSON : ")
+           graphe = charger_graphe_depuis_fichier(chemin_fichier)
+        elif ch=='2':
+           chemin_fichier = input("Entrez le chemin du fichier excel : ")
+           graphe = Graphe(chemin_fichier) 
+
     elif choix == '2':
         graphe = saisie_manuelle_graphe()
     elif choix == '3':
         graphe = initialiser_donnees_statiques()
         modifier_graphe(graphe)
+    elif choix== '4':
+       chemin_fichier = input("Entrez le chemin du fichier excel : ")
+       
     else:
         print("Choix invalide.")
         return
@@ -181,3 +190,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

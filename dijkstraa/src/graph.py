@@ -1,3 +1,4 @@
+import pandas as pds
 class Noeud:
     def __init__(self, id: int, type: str, coordonnees: tuple, etat: bool = True):
         self.id = id
@@ -55,14 +56,50 @@ class Lien:
 
 
 class Graphe:
-    def __init__(self):
+    def __init__(self, excel_path=None):
         self.noeuds = []
         self.liens = []
+        if excel_path:
+            self.charger_depuis_excel(excel_path)
+    def charger_depuis_excel(self, excel_path):
+        df = pds.read_excel(excel_path, sheet_name=None)
+        noeuds_df = df["Noeuds"]
+        liens_df = df["Liens"]
+        
+        # Create nodes
+        for index, row in noeuds_df.iterrows():
+            noeud = Noeud(
+                id=row["id"],
+                type=row["type"],
+                coordonnees=(row["x"], row["y"]),
+                etat=row["etat"]
+            )
+            self.ajouter_noeud(noeud)
 
+        # Create links
+        for index, row in liens_df.iterrows():
+            source_noeud = self.get_noeud_by_id(row["source_id"])
+            destination_noeud = self.get_noeud_by_id(row["destination_id"])
+            if source_noeud and destination_noeud:
+                lien = Lien(
+                    source=source_noeud,
+                    destination=destination_noeud,
+                    capacite_max=row["capacite_max"],
+                    latence=row["latence"],
+                    bande_passante=row["bande_passante"],
+                    charge=row["charge"],
+                    fiabilite=row["fiabilite"]
+                )
+                self.ajouter_lien(lien)
+    
     def ajouter_noeud(self, noeud: Noeud):
         self.noeuds.append(noeud)
 
-    
+    def get_noeud_by_id(self, id):
+        for noeud in self.noeuds:
+            if noeud.id == id:
+                return noeud
+        return None
 
     def supprimer_noeud(self, noeud: Noeud):
         self.noeuds.remove(noeud)
@@ -78,13 +115,14 @@ class Graphe:
     def afficher_graphe(self):
         for lien in self.liens:
             print(f"{lien.source.id} -> {lien.destination.id} (Cout: {lien.calculer_cout()})")
-
     def trouver_noeud(self, id_noeud):
         """Recherche un nœud par son ID et le retourne, ou None s'il n'est pas trouvé."""
         for noeud in self.noeuds:
             if noeud.id == id_noeud:
                 return noeud
-        return None   
+        return None
+
+
     def ajouter_lien(self, lien: Lien):
         self.liens.append(lien)
         lien.source.ajouter_voisin(lien)  # Ajout du lien aux voisins du nœud source
