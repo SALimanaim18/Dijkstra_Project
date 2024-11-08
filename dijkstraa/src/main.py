@@ -178,12 +178,13 @@ def main():
             return
 
         # Calcul du chemin optimal avec Dijkstra
-        chemin_optimal, distance_totale = Dijkstra.calculer_chemin_optimal(graphe, origine, destination)
+    # Calcul du chemin optimal avec Dijkstra et récupération de l'historique
+        historique, distance_totale, chemin_optimal = Dijkstra.calculer_chemin_optimal(graphe, origine, destination)
         print("Chemin optimal:", [noeud.id for noeud in chemin_optimal])
         print("Distance totale:", distance_totale)
 
-        # Visualisation du graphe avec le chemin optimal et la distance
-        dessiner_graphe(graphe, chemin_optimal=chemin_optimal, distance_totale=distance_totale)
+        # Visualisation du graphe avec le chemin optimal, la distance et l'historique
+        dessiner_graphe(graphe, historique=historique, chemin_optimal=chemin_optimal, distance_totale=distance_totale)
 
     except ValueError:
         print("Entrée invalide.")

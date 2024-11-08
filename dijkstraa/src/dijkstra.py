@@ -10,10 +10,17 @@ class Dijkstra:
         priority_queue = [(0, origine)]
         chemin = {noeud: None for noeud in graphe.noeuds}
 
+        # Historique pour le tableau
+        historique = []
+        
         while priority_queue:
             current_distance, current_noeud = heapq.heappop(priority_queue)
 
-            # Vérification des distances pour le noeud actuel
+            # Capture de l'état actuel pour le tableau
+            etape = {noeud.id: (distances[noeud] if distances[noeud] != float('infinity') else '∞') for noeud in graphe.noeuds}
+            etape["Nœud fixé"] = current_noeud.id
+            historique.append(etape)
+
             if current_distance > distances[current_noeud]:
                 continue
 
@@ -21,25 +28,19 @@ class Dijkstra:
             for lien in current_noeud.obtenir_voisins():
                 distance = current_distance + lien.calculer_cout()
                 
-                # Débogage : Afficher les informations de coût et de distance
-                print(f"Vérification lien: {current_noeud.id} -> {lien.destination.id} avec coût {distance}")
-                
-                # Si la distance trouvée est plus courte, mettez-la à jour
                 if distance < distances[lien.destination]:
                     distances[lien.destination] = distance
                     chemin[lien.destination] = current_noeud
                     heapq.heappush(priority_queue, (distance, lien.destination))
 
-        # Vérifiez si le nœud de destination a été atteint
-        if distances[destination] == float('infinity'):
-            return [], distances[destination]
-
         # Reconstruire le chemin optimal
         chemin_optimal = []
-        current_noeud = destination
-        while current_noeud is not None:
-            chemin_optimal.append(current_noeud)
-            current_noeud = chemin[current_noeud]
+        noeud_courant = destination
+        while noeud_courant is not None:
+            chemin_optimal.append(noeud_courant)
+            noeud_courant = chemin[noeud_courant]
+        
         chemin_optimal.reverse()
 
-        return chemin_optimal, distances[destination]
+        # Retourner l'historique, la distance totale, et le chemin optimal
+        return historique, distances[destination], chemin_optimal
