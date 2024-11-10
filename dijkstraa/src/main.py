@@ -154,23 +154,23 @@ def main():
         elif ch=='2':
            chemin_fichier = input("Entrez le chemin du fichier excel : ")
            graphe = Graphe(chemin_fichier) 
+        else:
+           print("Choix invalide.")
 
     elif choix == '2':
         graphe = saisie_manuelle_graphe()
     elif choix == '3':
         graphe = initialiser_donnees_statiques()
         modifier_graphe(graphe)
-    elif choix== '4':
-       chemin_fichier = input("Entrez le chemin du fichier excel : ")
-       
+
     else:
         print("Choix invalide.")
         return
 
     # Saisie des nœuds d'origine et de destination
     try:
-        origine_id = int(input("Entrez l'ID du nœud d'origine : "))
-        destination_id = int(input("Entrez l'ID du nœud de destination : "))
+        origine_id = input("Entrez l'ID du nœud d'origine : ")
+        destination_id = input("Entrez l'ID du nœud de destination : ")
         origine = graphe.trouver_noeud(origine_id)
         destination = graphe.trouver_noeud(destination_id)
         if origine is None or destination is None:
