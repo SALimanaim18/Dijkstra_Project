@@ -1,9 +1,9 @@
 import pandas as pds
 class Noeud:
-    def __init__(self, id: int, type: str, coordonnees: tuple, etat: bool = True):
+    def __init__(self, id: str, type: str, etat: bool = True):
         self.id = id
         self.type = type
-        self.coordonnees = coordonnees
+  
         self.etat = etat
         self.voisins = []
 
@@ -69,17 +69,21 @@ class Graphe:
         # Create nodes
         for index, row in noeuds_df.iterrows():
             noeud = Noeud(
-                id=row["id"],
+                id=str(row["id"]),
                 type=row["type"],
-                coordonnees=(row["x"], row["y"]),
                 etat=row["etat"]
             )
             self.ajouter_noeud(noeud)
 
         # Create links
         for index, row in liens_df.iterrows():
-            source_noeud = self.get_noeud_by_id(row["source_id"])
-            destination_noeud = self.get_noeud_by_id(row["destination_id"])
+            # Conversion des identifiants pour enlever les décimales
+            source_id = str(int(row["source_id"]))
+            destination_id = str(int(row["destination_id"]))
+            
+            source_noeud = self.get_noeud_by_id(source_id)
+            destination_noeud = self.get_noeud_by_id(destination_id)
+            
             if source_noeud and destination_noeud:
                 lien = Lien(
                     source=source_noeud,
@@ -91,7 +95,10 @@ class Graphe:
                     fiabilite=row["fiabilite"]
                 )
                 self.ajouter_lien(lien)
-    
+            else:
+                print(f"Lien non ajouté : {source_id} -> {destination_id}, car l'un des nœuds est introuvable.")
+
+            
     def ajouter_noeud(self, noeud: Noeud):
         self.noeuds.append(noeud)
 

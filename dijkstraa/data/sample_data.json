@@ -1,30 +1,26 @@
 {
     "noeuds": [
         {
-            "id": 1,
-            "type": "Routeur",
-            "coordonnees": [0, 0]
+            "id": "1",
+            "type": "Routeur"
         },
         {
-            "id": 2,
-            "type": "Switch",
-            "coordonnees": [1, 1]
+            "id": "2",
+            "type": "Switch"
         },
         {
-            "id": 3,
-            "type": "Serveur",
-            "coordonnees": [2, 0]
+            "id": "3",
+            "type": "Serveur"
         },
         {
-            "id": 4,
-            "type": "Ordinateur",
-            "coordonnees": [1, -1]
+            "id": "4",
+            "type": "Ordinateur"
         }
     ],
     "liens": [
         {
-            "source": 1,
-            "destination": 2,
+            "source": "1",
+            "destination": "2",
             "capacite_max": 100.0,
             "latence": 10.5,
             "bande_passante": 50.0,
@@ -32,8 +28,8 @@
             "fiabilite": 0.98
         },
         {
-            "source": 2,
-            "destination": 3,
+            "source":"2" ,
+            "destination": "3",
             "capacite_max": 200.0,
             "latence": 5.0,
             "bande_passante": 100.0,
@@ -41,8 +37,8 @@
             "fiabilite": 0.95
         },
         {
-            "source": 3,
-            "destination": 4,
+            "source": "3",
+            "destination": "4",
             "capacite_max": 150.0,
             "latence": 7.0,
             "bande_passante": 80.0,
@@ -50,8 +46,8 @@
             "fiabilite": 0.99
         },
         {
-            "source": 1,
-            "destination": 4,
+            "source": "1",
+            "destination": "4",
             "capacite_max": 100.0,
             "latence": 15.0,
             "bande_passante": 60.0,
